@@ -16,7 +16,6 @@ def checkAvaliability(urlWithPort):
         print 'success'
         return True
 
-
 #checkAvaliability("114.232.116.30:44597")
 
 #针对

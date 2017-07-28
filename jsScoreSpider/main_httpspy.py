@@ -57,7 +57,7 @@ def findExamCode(userId, fullName):
     post_data = 'sfzjlx=0&sfzjh={0}&zkzh=&xm={1}'.format(userId, urlName)
     try:
         proxyHost,proxyPort,proxyFull = getProxy(mProxyQueue)
-        httpClient = httplib.HTTPConnection(proxyHost,proxyPort,timeout=5)
+        httpClient = httplib.HTTPConnection(proxyHost,proxyPort,timeout=10)
         print "create httpClient1======================name"+fullName+"===============userId"+str(userId)+"=================currentTime:"+time.ctime()
 
         httpClient.request('POST', 'http://sdata.jseea.cn/tpl_front/zhuankao/findZkzh.html', post_data, http_header)
@@ -66,7 +66,7 @@ def findExamCode(userId, fullName):
         # print response.getheaders()
         body = response.read()
         # 归还代理
-        # todo 此处应该增加判断是进入网页还是重定向到其他错误页面
+        # 此处增加判断是进入网页还是重定向到其他错误页面
         if body.find('公众信息服务平台') <0 :
             raise Exception('此ip被封')
         giveBackProxy(mProxyQueue,proxyFull)
@@ -145,7 +145,7 @@ def getScores(examCode,fullName,certNo):
             examinfo = "(code:{0},name:{1},score:{2},data:{3})".format(matchResult[cnt][0],matchResult[cnt][1],matchResult[cnt][2],examDate)
             okCnt = okCnt+1
 
-            print 'okCnt:'+okCnt
+            print 'okCnt:'+str(okCnt)
             #sql ="INSERT INTO js_zk_score( student_name, zkzCode, cert_no, score_info) VALUE ( '{0}', '{1}', '{2}', '{3}' ) ON DUPLICATE KEY UPDATE score_info = CONCAT(score_info, ';', '{3}')".format(fullName,examCode,certNo,examinfo)
             #mcur.execute(sql)
             #conn.commit()
